@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+
+.bg-img {
+  /* The image used */
+  background-image: url("res/about.jpeg");
+
+  height: 800px;
+  width: 100%;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  
+  position: relative;
+}
+
+/* Position the navbar container inside the image */
+.container {
+  position: absolute;
+  top: 90px;
+  left: 570px;
+
+  width: auto;
+}
+
+/* The navbar */
+.topnav {
+  overflow: hidden;
+  background-color: #333;
+  padding-left: 90px;
+  padding-right: 90px;
+
+}
+
+/* Navbar links */
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+
+}
+
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+
+}
+
+.centered{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+h1 {
+	text-indent: 500px;
+	color: white;
+	margin-top: 33px; 
+	margin-left: 10px; 
+	}
+	
+.text-block {
+  position: absolute;
+  bottom: 45px;
+  left: 0px;
+  background-color: #333;
+  color: white;
+  padding-left: 90px;
+  padding-right: 90px;
+  font-size: 300%;
+  font-family: "myFont";
+  text-align: center;
+}
+.text-block2 {
+  position: absolute;
+  top: 50px;
+  left: 0px;
+  background-color: #f2f2f2;
+  color: black;
+  padding-left: 90px;
+  padding-right: 90px;
+  font-size: 100%;
+  font-family: "myFont1";
+  text-align: center;
+  opacity: 0.8;
+}
+@font-face{
+  font-family: myFont;
+  src: url(res/Created.ttf);
+}
+@font-face{
+  font-family: myFont1;
+  src: url(res/tecnico_regular.ttf);
+}
+</style>
+</head>
+<body>
+<div class="bg-img">
+  <div class="container">
+    <div class="topnav">
+      <a href="home.html">Home</a>
+      <a href="upload.html">Upload</a>
+      <a href="suggestions.html">Suggestions</a>
+      <a href="about.html">About</a>
+    </div>
+	  <div class="text-block">
+		<h>Building's checker</h>
+	  </div>
+	  <div class="text-block2">
+		<h>-<br>There is a major architectural problem in many of the cities that have withstood the passage of time: 
+the multitude of architectural styles that sometimes do not blend well. Building's checker is a digital image
+processing software that can figure out the similarities between buildings in order to reduce the future style
+discrepancies from a neighborhood , so the architecture can remain continous and clean.<br>-</h>
+		</div>
+  </div>
+
+</div>
+</body>
+</html>

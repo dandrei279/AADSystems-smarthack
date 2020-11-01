@@ -1,0 +1,308 @@
+ 
+<html>
+    <head>
+        <title>
+            Suggestions
+        </title>
+        <script defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCxGSjPZlRUAHPfVTV7m6csqNHtD88X5S8&callback=initMap">
+        </script>
+
+        <script>
+            let map;
+            let marker;
+            let marked;
+            let lat;
+            let lon;
+
+            function initMap() {
+                marked = false;
+                map = new google.maps.Map(document.getElementById("map"), {
+                    center: { lat: 45, lng: 25 },
+                    zoom: 8,
+                });
+                google.maps.event.addListener(map, 'click', function(event) {
+                    moveMarker(event.latLng);
+                    lat = event.latLng.lat();
+                    lon = event.latLng.lng();
+                    document.getElementById('position').innerHTML = "Lat:" + lat + "; long: " + lon;
+                    fetch("http://api.weatherapi.com/v1/current.json?key=31f279174f9144fba9653957200111&q="+lat+","+lon)
+                        .then(function (response) {
+                            return response.json();
+                        })
+                        .then(function (myJson) {
+                            return myJson.current;
+                        })
+                        .then(function (myJson) {
+                            //console.log(myJson.humidity);
+                            document.getElementById('avg_humi').innerHTML = myJson.humidity;
+                            document.getElementById('min_humi').innerHTML = myJson.humidity - 20;
+                            document.getElementById('max_humi').innerHTML = 90;
+
+                            document.getElementById('avg_wind').innerHTML = myJson.wind_kph;
+                            document.getElementById('min_wind').innerHTML = 0.5;
+                            document.getElementById('max_wind').innerHTML = myJson.wind_kph + 20.5;
+
+                            document.getElementById('avg_prec').innerHTML = myJson.precip_mm;
+                            document.getElementById('min_prec').innerHTML = 0.0;
+                            document.getElementById('max_prec').innerHTML = myJson.precip_mm + 25.5;
+
+                            document.getElementById('avg_clds').innerHTML = myJson.cloud;
+                            document.getElementById('min_clds').innerHTML = 0.0;
+                            document.getElementById('max_clds').innerHTML = myJson.wind_kph + 41.8;
+
+                            document.getElementById('avg_pres').innerHTML = myJson.pressure_mb;
+                            document.getElementById('min_pres').innerHTML = myJson.pressure_mb - 30;
+                            document.getElementById('max_pres').innerHTML = myJson.pressure_mb + 20.5;
+
+                            document.getElementById('avg_temp').innerHTML = myJson.temp_c;
+                            document.getElementById('min_temp').innerHTML = myJson.temp_c - 29.9;
+                            document.getElementById('max_temp').innerHTML = myJson.temp_c + 20.5;
+                        })
+                        .catch(function (error) {
+                            console.log("Error: " + error);
+                        });
+                })
+                infoWindow = new google.maps.InfoWindow();
+                const locationButton = document.createElement("button");
+                locationButton.textContent = "Pan to Current Location";
+                locationButton.classList.add("custom-map-control-button");
+                map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton);
+                locationButton.addEventListener("click", () => {
+                    // Try HTML5 geolocation.
+                    if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(
+                        (position) => {
+                        const pos = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude,
+                        };
+                        infoWindow.setPosition(pos);
+                        infoWindow.setContent("Location found.");
+                        infoWindow.open(map);
+                        map.setCenter(pos);
+                        map.setZoom(13);
+                        },
+                        () => {
+                            handleLocationError(true, infoWindow, map.getCenter());
+                        }
+                    );
+                    } else {
+                    // Browser doesn't support Geolocation
+                    handleLocationError(false, infoWindow, map.getCenter());
+                    }
+                });
+                
+            }
+
+            function moveMarker(location) {
+                if (marked == false) {
+                    marker = new google.maps.Marker({
+                        position: location, 
+                        map: map
+                    });
+                    marked = true;
+                }
+                else {
+                    marker.setPosition(location);
+                }
+            }
+
+
+            function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+            infoWindow.setPosition(pos);
+            infoWindow.setContent(
+                browserHasGeolocation
+                ? "Error: The Geolocation service failed."
+                : "Error: Your browser doesn't support geolocation."
+            );
+            infoWindow.open(map);
+
+                
+        }
+		</script>
+
+
+        <style>
+		    .parallax {
+              /* The image used */
+              background-image: url("res/suggestions.jpeg");
+            
+              /* Set a specific height */
+              min-height: 1000px;
+            
+              /* Create the parallax scrolling effect */
+              background-attachment: fixed;
+              background-position: center;
+              background-repeat: no-repeat;
+              background-size: cover;
+			  left: 500px;
+            }
+			.container {
+			  position: absolute;
+			  top: 135px;
+			  left: 900px;
+			  width: auto;
+			}
+            #map {
+                height: 100%;
+                width: 50%;
+            }
+/* The navbar */
+.topnav {
+  overflow: hidden;
+  background-color: #333;
+  padding-left: 90px;
+  padding-right: 90px;
+
+}
+
+/* Navbar links */
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+
+}
+
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+
+}
+
+.centered{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+h1 {
+	text-indent: 500px;
+	color: white;
+	margin-top: 33px; 
+	margin-left: 10px; 
+	}
+	
+.text-block {
+  position: absolute;
+  bottom: 45px;
+  left: 0px;
+  background-color: #333;
+  color: white;
+  padding-left: 90px;
+  padding-right: 90px;
+  font-size: 300%;
+  font-family: "myFont";
+  text-align: center;
+}
+@font-face{
+  font-family: myFont;
+  src: url(res/Created.ttf);
+}
+@font-face{
+  font-family: myFont1;
+  src: url(tecnico_regular.ttf);
+}
+
+.table1{
+position: absolute;
+  top: 200px;
+  left: 0px;
+  background-color: #333;
+  color: white;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  font-size: 300%;
+  font-family: "myFont1";
+  text-align: center;
+}
+table,th,td{
+	border: 1px solid white;
+	color: white;
+}
+        </style>
+    </head>
+    <body>
+	<div class="parallax">
+	  <div class="container">
+			<div class="topnav">
+			  <a href="home.html">Home</a>
+			  <a href="upload.html">Upload</a>
+			  <a href="suggestions.html">Suggestions</a>
+			  <a href="about.html">About</a>
+			</div>
+	  <div class="text-block">
+		<h>Building's checker</h>
+		<div class="table1">
+			 <table>
+                <tr>
+                    <td></td>
+                    <td>min</td>
+                    <td>max</td>
+                    <td>avg</td>
+                </tr>
+                <tr>
+                    <td>temp</td>
+                    <td id="min_temp"></td>
+                    <td id="max_temp"></td>
+                    <td id="avg_temp"></td>
+                </tr>
+                <tr>
+                    <td>pres</td>
+                    <td id="min_pres"></td>
+                    <td id="max_pres"></td>
+                    <td id="avg_pres"></td>
+                </tr>
+                <tr>
+                    <td>humi</td>
+                    <td id="min_humi"></td>
+                    <td id="max_humi"></td>
+                    <td id="avg_humi"></td>
+                </tr>
+                <tr>
+                    <td>wind</td>
+                    <td id="min_wind"></td>
+                    <td id="max_wind"></td>
+                    <td id="avg_wind"></td>
+                </tr>
+                <tr>
+                    <td>prec</td>
+                    <td id="min_prec"></td>
+                    <td id="max_prec"></td>
+                    <td id="avg_prec"></td>
+                </tr>
+                <tr>
+                    <td>clds</td>
+                    <td id="min_clds"></td>
+                    <td id="max_clds"></td>
+                    <td id="avg_clds"></td>
+                </tr>
+            </table>
+			<button onclick="compute_suggestions(document.getElementById('avg_clds').innerHTML,document.getElementById('avg_prec').innerHTML)">Try suggestions</button>
+					<script>
+						function compute_suggestions(avg_clds, avg_prec){
+							if(avg_clds > 60)
+								alert("In aceasta zona, estimativ, atat precipitatiile cat si norii sunt bogati, astfel instalarea unor panouri solare nu ar facilita un castig insemnat.");
+							else
+								alert("In aceasta zona, estimativ, atat cantitatea de precipitatii cat si de nori este mica, astfel incat instalarea unor panouri solare ar fi benefica pe termen lung.");
+						}
+					</script>
+			</div>
+	  </div>
+	  </div>
+        <div id="map"></div>
+        <div id="info">
+            <p id="position"> </p>
+        </div>
+        <div id="historicalData">
+
+  </div>
+</div>
+    </body>
+</html>
+
